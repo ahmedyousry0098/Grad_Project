@@ -11,8 +11,6 @@ const reducer = (state, action) => {
         case "set_shelf":
             return {...state, all_books: state.all_books.filter((book) => {
                 return book.id === action.payload.id;
-            }).map((book) => {
-                return book.shelf = action.payload.shelf;
             })}
 
         case "currently_reading":
@@ -55,6 +53,7 @@ export const ContextProvider = ({children}) => {
     }
 
     const currentlyReading = (id, {shelf}) => {
+        console.log(id, shelf)
         dispatch({type: "set_shelf", payload: {id, shelf}})
         if (state.currently_reading) {
             dispatch({type: "currently_reading"})

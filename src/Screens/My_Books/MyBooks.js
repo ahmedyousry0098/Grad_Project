@@ -6,7 +6,8 @@ import Context from "../../Context/context"
 
 const MyBooks = () => {
 
-    const { state: {all_books}, allReads} = useContext(Context);
+    const { state: {all_books}, allReads } = useContext(Context);
+
 
     useEffect( () => {
         if (all_books.length === 0) {
