@@ -4,7 +4,9 @@ import BookShelfChanger from "../../Components/BookShelfChanger";
 
 const CurrentlyReading = () => {
 
-    const {state: {currently_reading}} = useContext(Context)
+    const {state: {all_books}} = useContext(Context);
+
+    
 
     return (
         <div className="bookshelf">
@@ -12,8 +14,8 @@ const CurrentlyReading = () => {
             <div className="bookshelf-books">
                 <ol className="books-grid">
                     {
-                        currently_reading.map((book) => {
-                            return <li>
+                        all_books.filter((book) => book.shelf === "currentlyReading").map((book) => {
+                            return <li key={book.id}>
                                 <div className="book">
                                     <div className="book-top">
                                         <div
@@ -37,6 +39,7 @@ const CurrentlyReading = () => {
                         })
                     }
                 </ol>
+                
             </div>
             
         </div>

@@ -9,24 +9,24 @@ const reducer = (state, action) => {
             return {...state, all_books: action.payload};
 
         case "set_shelf":
-            return {...state, all_books: state.all_books.filter((book) => {
-                return book.id === action.payload.id;
-            })}
+            return {...state, all_books: state.all_books
+                .filter((book) => book.id === action.payload.id)
+                .map((book) => book.shelf = action.payload.shelf)}
 
-        case "currently_reading":
-            return {...state, currently_reading: state.all_books.filter((book) => {
-                return book.shelf === "currentlyReading";
-            })};
+        // case "currently_reading":
+        //     return {...state, currently_reading: state.all_books.filter((book) => {
+        //         return book.shelf === "currentlyReading";
+        //     })};
 
-        case "want_to_read":
-            return {...state, want_to_read: state.all_books.filter((book) => {
-                return book.shelf === "wantToRead";
-            })};
+        // case "want_to_read":
+        //     return {...state, want_to_read: state.all_books.filter((book) => {
+        //         return book === "wantToRead";
+        //     })};
 
-        case "read":
-            return {...state, read: state.all_books.filter((book) => {
-                return book.shelf === "read";
-            })}
+        // case "read":
+        //     return {...state, read: state.all_books.filter((book) => {
+        //         return book.shelf === "read";
+        //     })}
 
         default: 
             return state;
@@ -35,12 +35,7 @@ const reducer = (state, action) => {
 
 export const ContextProvider = ({children}) => {
 
-    const [state, dispatch] = useReducer(reducer, {
-        all_books: [],
-        currently_reading: [],
-        want_to_read: [],
-        read: [],
-    });
+    const [state, dispatch] = useReducer(reducer, {all_books: []},);
 
     const allReads = async() => {
         try {
@@ -53,27 +48,15 @@ export const ContextProvider = ({children}) => {
     }
 
     const currentlyReading = (id, {shelf}) => {
-        console.log(id, shelf)
         dispatch({type: "set_shelf", payload: {id, shelf}})
-        if (state.currently_reading) {
-            dispatch({type: "currently_reading"})
-        }
     }
 
     const wantToRead = (id, {shelf}) => {
-        console.log(id);
-        console.log(shelf);
         dispatch({type: "set_shelf", payload: {id, shelf}})
-        if (state.want_to_read) {
-            dispatch({type: "want_to_read"});
-        }
     }
 
     const read = (id, {shelf}) => {
         dispatch({type: "set_shelf", payload: {id, shelf}});
-        if (state.currently_reading) {
-            dispatch({type: "read"})
-        }
     }
 
 

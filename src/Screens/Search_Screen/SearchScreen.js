@@ -35,7 +35,7 @@ const SearchScreen = ({onSwitch}) => {
           <ol className="books-grid">
             {
               books_list.map((book) => {
-                return <li key={book.title}>
+                return <li key={book.id}>
                     <div className="book">
                       <div className="book-top">
                         <div 
