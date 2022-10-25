@@ -1,5 +1,5 @@
 import React, {useReducer} from "react";
-import {getAll} from "../Api/BooksAPI";
+import {getAll, update, search} from "../Api/BooksAPI";
 
 const Context = React.createContext();
 
@@ -9,24 +9,23 @@ const reducer = (state, action) => {
             return {...state, all_books: action.payload};
 
         case "set_shelf":
-            return {...state, all_books: state.all_books
-                .filter((book) => book.id === action.payload.id)
-                .map((book) => book.shelf = action.payload.shelf)}
+            const updatedBooksShelf = state.all_books.map((book) => {
+                if (book.id === action.payload.id) {
+                    book.shelf = action.payload.shelf;
+                }
+                return book;
+            });
+                update({ id: action.payload.id }, action.payload.shelf);
+            return {
+                ...state,
+                all_books: updatedBooksShelf,
+            };
 
-        // case "currently_reading":
-        //     return {...state, currently_reading: state.all_books.filter((book) => {
-        //         return book.shelf === "currentlyReading";
-        //     })};
-
-        // case "want_to_read":
-        //     return {...state, want_to_read: state.all_books.filter((book) => {
-        //         return book === "wantToRead";
-        //     })};
-
-        // case "read":
-        //     return {...state, read: state.all_books.filter((book) => {
-        //         return book.shelf === "read";
-        //     })}
+        case "search": 
+            return {
+                ...state,
+                search_books: action.payload
+            }
 
         default: 
             return state;
@@ -35,11 +34,11 @@ const reducer = (state, action) => {
 
 export const ContextProvider = ({children}) => {
 
-    const [state, dispatch] = useReducer(reducer, {all_books: []},);
+    const [state, dispatch] = useReducer(reducer, { all_books: [], search_books: [] },);
 
     const allReads = async() => {
         try {
-            const all_books = await getAll();            
+            const all_books = await getAll();
             console.log(all_books);
             dispatch({type: "all_reads", payload: all_books});
         } catch(e) {
@@ -47,20 +46,21 @@ export const ContextProvider = ({children}) => {
         }
     }
 
-    const currentlyReading = (id, {shelf}) => {
-        dispatch({type: "set_shelf", payload: {id, shelf}})
+    const getSearchedResult = async (searchTerm) => {
+        try {
+            const result = await search(searchTerm);
+            console.log(result)
+            dispatch({type: "search", payload: result})
+        } catch(e) {
+            console.log(`error is ${e}`)
+        }
     }
 
-    const wantToRead = (id, {shelf}) => {
-        dispatch({type: "set_shelf", payload: {id, shelf}})
+    const setShelf = (id, shelf) => {
+        dispatch({type: "setShelf", payload: {id, shelf}})
     }
 
-    const read = (id, {shelf}) => {
-        dispatch({type: "set_shelf", payload: {id, shelf}});
-    }
-
-
-    return <Context.Provider value={{state, allReads, currentlyReading, wantToRead, read}}>
+    return <Context.Provider value={{state, allReads, setShelf, getSearchedResult}}>
         {children}
     </Context.Provider>
     

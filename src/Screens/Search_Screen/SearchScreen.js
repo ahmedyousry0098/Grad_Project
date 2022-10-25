@@ -1,15 +1,18 @@
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import BookShelfChanger from "../../Components/BookShelfChanger";
 import Context from "../../Context/context";
 
 const SearchScreen = ({onSwitch}) => {
 
   const [searchTerm, setSearchTerm] = useState("");
-  const {state: {all_books}} = useContext(Context);
+  const {state: {search_books}, getSearchedResult} = useContext(Context)
 
-  const books_list = !searchTerm ? all_books : all_books.filter((book) => {
-        return book.title.toLowerCase().includes(searchTerm.trim().toLowerCase())  
-      });
+  useEffect(() => {
+    
+    if (searchTerm) {
+      getSearchedResult()
+    }
+  })  
 
   return (
       <div className="search-books">
@@ -27,14 +30,16 @@ const SearchScreen = ({onSwitch}) => {
               type="text"
               placeholder="Search by title, author, or ISBN"
               value={searchTerm}
-              onChange={(n) => setSearchTerm(n.target.value)}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+              }}
             />
           </div>
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
             {
-              books_list.map((book) => {
+              search_books? search_books.map((book) => {
                 return <li key={book.id}>
                     <div className="book">
                       <div className="book-top">
@@ -57,8 +62,8 @@ const SearchScreen = ({onSwitch}) => {
 
                     </div>
                   </li>
-              })
-            }
+              }): null
+            } 
           </ol>
           
         </div>

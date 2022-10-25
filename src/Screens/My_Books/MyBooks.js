@@ -11,7 +11,7 @@ const MyBooks = () => {
 
     useEffect( () => {
         if (all_books.length === 0) {
-          allReads()
+          allReads();
         }
       });
 
@@ -20,7 +20,6 @@ const MyBooks = () => {
             <CurrentlyReading />
             <WantToRead />
             <Read />
-            {/* <p>{all_books.map((book) => ` bookShelf: ${book.shelf} `)}</p> */}
         </div>
     )
 };
