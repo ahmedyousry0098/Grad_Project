@@ -57,6 +57,7 @@ export const ContextProvider = ({children}) => {
     }
 
     const setShelf = (id, shelf) => {
+        console.log("working")
         dispatch({type: "setShelf", payload: {id, shelf}})
     }
 

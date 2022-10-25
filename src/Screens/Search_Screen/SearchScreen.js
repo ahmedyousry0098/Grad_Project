@@ -1,8 +1,9 @@
 import { useState, useEffect, useContext } from "react";
 import BookShelfChanger from "../../Components/BookShelfChanger";
 import Context from "../../Context/context";
+import {Link} from "react-router-dom"
 
-const SearchScreen = ({onSwitch}) => {
+const SearchScreen = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const {state: {search_books}, getSearchedResult} = useContext(Context)
@@ -12,18 +13,14 @@ const SearchScreen = ({onSwitch}) => {
     if (searchTerm) {
       getSearchedResult(searchTerm)
     }
-  })  
+  }, [searchTerm])  
 
   return (
       <div className="search-books">
         <div className="search-books-bar">
-          <div 
-            href
-            className="close-search"
-            onClick={onSwitch}
-          >
+          <Link to="/" className="close-search">
             Close
-          </div>
+          </Link>
           
           <div className="search-books-input-wrapper">
             <input
