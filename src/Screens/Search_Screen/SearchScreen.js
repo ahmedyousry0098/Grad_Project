@@ -10,7 +10,7 @@ const SearchScreen = ({onSwitch}) => {
   useEffect(() => {
     
     if (searchTerm) {
-      getSearchedResult()
+      getSearchedResult(searchTerm)
     }
   })  
 
