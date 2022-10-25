@@ -1,29 +1,23 @@
-import { useState, useEffect, useContext } from "react";
-import BookShelfChanger from "../../Components/BookShelfChanger";
-import Context from "../../Context/context";
+import { useState, useEffect, useContext } from 'react';
+import BookShelfChanger from "../../../Components/BookShelfChanger";
+import Context from "../../../Context/context";
+import {Link} from "react-router-dom"
 
-const SearchScreen = ({onSwitch}) => {
+const SearchScreen = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
-  const {state: {search_books}, getSearchedResult} = useContext(Context)
+  const {state: {search_books}, getSearchedResult} = useContext(Context);
 
   useEffect(() => {
-    
-    if (searchTerm) {
-      getSearchedResult(searchTerm)
-    }
-  }, [searchTerm])  
+    getSearchedResult(searchTerm);
+  }, [searchTerm]);
 
   return (
       <div className="search-books">
         <div className="search-books-bar">
-          <div 
-            href
-            className="close-search"
-            onClick={onSwitch}
-          >
+          <Link to="/" className="close-search">
             Close
-          </div>
+          </Link>
           
           <div className="search-books-input-wrapper">
             <input
@@ -38,8 +32,8 @@ const SearchScreen = ({onSwitch}) => {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {
-              search_books? search_books.map((book) => {
+            { search_books
+              ? search_books?.map((book) => {
                 return <li key={book.id}>
                     <div className="book">
                       <div className="book-top">
@@ -48,7 +42,7 @@ const SearchScreen = ({onSwitch}) => {
                           style={{
                             width: 150,
                             height: 220,
-                            backgroundImage: `url(${book.imageLinks.thumbnail})`
+                            backgroundImage: `url(${book?.imageLinks?.thumbnail || ""})`
                           }}
                         ></div>
 
@@ -62,8 +56,8 @@ const SearchScreen = ({onSwitch}) => {
 
                     </div>
                   </li>
-              }): null
-            } 
+              }): null } 
+
           </ol>
           
         </div>

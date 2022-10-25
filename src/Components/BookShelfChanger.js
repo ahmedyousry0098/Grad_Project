@@ -9,7 +9,7 @@ const BookShelfChanger = ({selected}) => {
         <select 
             onChange= {(e) => setShelf(selected, e.target.value)}
         >
-            <option value="none" disabled>
+            <option value="" disabled>
                 Move to...
             </option>
 

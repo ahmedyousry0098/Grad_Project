@@ -1,20 +1,21 @@
-import CurrentlyReading from "./CurrentlyReading";
-import WantToRead from "./WantToRead";
-import Read from "./Read";
 import {useContext, useEffect} from "react";
 import {Link} from "react-router-dom"
 import Context from "../../Context/context"
+import CurrentlyReading from "./CurrentlyReading";
+import WantToRead from "./WantToRead";
+import Read from "./Read";
 
 const MyBooks = () => {
 
-    const { state: {all_books}, allReads } = useContext(Context);
+    const { state, allReads } = useContext(Context);
 
 
     useEffect( () => {
-        if (all_books.length === 0) {
-          allReads();
-        }
-      });
+      if (state.all_books.length === 0) {
+        allReads();
+        console.log("updating..");
+      };
+    });
 
     return(
       <div className="app">
@@ -40,4 +41,4 @@ const MyBooks = () => {
     )
 };
 
-export default MyBooks
+export default MyBooks;
